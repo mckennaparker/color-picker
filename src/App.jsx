@@ -1,35 +1,71 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [selectedColor, setSelectedColor] = useState({ hex: null, name: null });
+  const [focusedIndex, setFocusedIndex] = useState(null);
+
+  const colors = [
+    { name: "Light Teal", hex: "#018FE1" },
+    { name: "Light Brown", hex: "#A1702F" },
+    { name: "Orange", hex: "#E08409" },
+    { name: "Dark Teal", hex: "#346B8B" },
+    { name: "Dark Brown", hex: "#614E34" },
+    { name: "Stone Blue", hex: "#263136" },
+  ];
+
+  const handleClick = (color) => {
+    navigator.clipboard.writeText(color.hex).then(() => null);
+    setSelectedColor(color);
+  }
+
+  const handleMouseEnter = (hex) => {
+    setSelectedColor({ hex: hex, name: null });
+  }
+
+  const handleMouseLeave = () => {
+    setSelectedColor({ hex: null, name: null });
+  }
+
+  const handleFocus = (index) => {
+    setFocusedIndex(index);
+  }
+
+  const handleBlur = () => {
+    setFocusedIndex(null);
+  }
+
+  const handleKeyDown = (e, index) => {
+    if (e.key == "Enter") {
+      setSelectedColor(colors[index]);
+      navigator.clipboard.writeText(colors[index].hex).then(() => null);
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="color-picker">
+      <h1>Color Picker</h1>
+      <p>Click on a color to use it in your project!</p>
+      <div className="color-list">
+        {colors.map((color, index) => (
+          <div
+            key={index}
+            className={`color-item ${focusedIndex === index ? 'focused' : ''}`}
+            style={{ backgroundColor: color.hex }}
+            onClick={() => handleClick(color)}
+            onMouseEnter={() => handleMouseEnter(color.hex)}
+            onMouseLeave={handleMouseLeave}
+            onFocus={() => handleFocus(index)}
+            onBlur={handleBlur}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            tabIndex={0}
+          >
+            {selectedColor.hex === color.hex && (
+              <span className="color-code">{selectedColor.name || color.hex}</span>
+            )}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
-
-export default App
