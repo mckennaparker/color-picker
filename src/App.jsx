@@ -15,7 +15,7 @@ export default function App() {
   ];
 
   const handleClick = (color) => {
-    navigator.clipboard.writeText(color.hex).then(() => null);
+    navigator.clipboard.writeText(color.hex).then(() => alert(`${color.name} hexcode has been copied to clipboard.`));
     setSelectedColor(color);
   }
 
@@ -38,7 +38,7 @@ export default function App() {
   const handleKeyDown = (e, index) => {
     if (e.key == "Enter") {
       setSelectedColor(colors[index]);
-      navigator.clipboard.writeText(colors[index].hex).then(() => null);
+      navigator.clipboard.writeText(colors[index].hex).then(() => alert(`${colors[index].name} hexcode has been copied to clipboard.`));
     }
   }
 

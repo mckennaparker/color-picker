@@ -17,9 +17,11 @@ p {
 
 .color-list {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  flex-direction: "row";
+  gap: 1rem;
+  flex-wrap: wrap;
   margin-top: 4rem;
+  width: 720px;
 }
 
 .color-item {
@@ -34,4 +36,17 @@ p {
   font-weight: 500;
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 800px) {
+  .color-list {
+    width: 360px;
+    gap: 1rem;
+    margin-top: 0;
+  }
+
+  .color-item {
+    width: 100%;
+    height: 90px;
+  }
 }
